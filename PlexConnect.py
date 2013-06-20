@@ -72,16 +72,17 @@ if __name__=="__main__":
             p_DNSServer.join()
         sys.exit(1)
     
-    try:
-        key = raw_input()
-    except KeyboardInterrupt:
-        dprint('PlexConnect', 0, "^C received.")
+    if sys.stdout.isatty():
+        try:
+            key = raw_input()
+        except KeyboardInterrupt:
+            dprint('PlexConnect', 0, "^C received.")
     
-    finally:
-        dprint('PlexConnect', 0,  "Shutting down.")
-        if cfg.getSetting('enable_dnsserver')=='True':
-            pipe_DNSServer[0].send('shutdown')
-            p_DNSServer.join()
-        
-        pipe_WebServer[0].send('shutdown')
-        p_WebServer.join()
+        finally:
+            dprint('PlexConnect', 0,  "Shutting down.")
+            if cfg.getSetting('enable_dnsserver')=='True':
+                pipe_DNSServer[0].send('shutdown')
+                p_DNSServer.join()
+            
+            pipe_WebServer[0].send('shutdown')
+            p_WebServer.join()
